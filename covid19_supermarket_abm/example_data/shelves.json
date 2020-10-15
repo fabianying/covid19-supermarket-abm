@@ -1,0 +1,785 @@
+[
+  {
+    "x": -7.35,
+    "y": 3.58,
+    "fixtureWidth": 2.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "0",
+    "fixtureAngle": 0,
+    "fixtureType": "Entrance"
+  },
+  {
+    "x": 13.69,
+    "y": 8.626251,
+    "fixtureWidth": 2.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "1",
+    "fixtureAngle": 0,
+    "fixtureType": "Entrance"
+  },
+  {
+    "x": 8.82,
+    "y": 8.626251,
+    "fixtureWidth": 2.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "2",
+    "fixtureAngle": 0,
+    "fixtureType": "Entrance"
+  },
+  {
+    "x": 15.23,
+    "y": 8.64,
+    "fixtureWidth": 2.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "3",
+    "fixtureAngle": 0,
+    "fixtureType": "Exit"
+  },
+  {
+    "x": 6.31,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "4",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 4.97,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "5",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -0.35,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "6",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -1.6899990000000003,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "7",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -4.339999,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "8",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -2.9999990000000003,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "9",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 2.3,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "10",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 0.9600013000000001,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "11",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 3.610001,
+    "y": 2.74,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "12",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -7.59,
+    "y": 1.85,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "13",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -7.63,
+    "y": 0.42000010000000004,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "14",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -7.59,
+    "y": -2.42,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "15",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -7.59,
+    "y": -1.01,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "16",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 1.13,
+    "y": -0.17,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 0.5,
+    "shelfCode": "17",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -0.6899986,
+    "y": -0.5099999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "18",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -4.649999,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "19",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -5.989999,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "20",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -3.3399989999999997,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "21",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -2.0,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "22",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 7.309999,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "23",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 5.97,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "24",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 3.3200010000000004,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "25",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 4.66,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "26",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 9.96,
+    "y": -0.51,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "27",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 8.620001,
+    "y": -0.5099999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "28",
+    "fixtureAngle": 0,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 9.700001,
+    "y": 0.82,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "29",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 11.04,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "30",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 5.74,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "31",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 4.4000010000000005,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "32",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 7.05,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "33",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 8.389999000000001,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "34",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -0.9200001,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "35",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -2.259999,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "36",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -4.909999,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "37",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -3.5699989999999997,
+    "y": 0.8199999,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "38",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 2.62,
+    "y": 0.8199999,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 0.5,
+    "shelfCode": "39",
+    "fixtureAngle": -90,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 0.3900013,
+    "y": 0.82,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.5,
+    "shelfCode": "40",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 3.0400009999999997,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "41",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 0.3900013,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "42",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 1.73,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "43",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -3.5699989999999997,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "44",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -4.909999,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "45",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -2.259999,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "46",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": -0.9200001,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "47",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 8.389999000000001,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "48",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 7.05,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "49",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 4.4000010000000005,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "50",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 5.74,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "51",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 11.04,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "52",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 9.700001,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "53",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 12.35,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "54",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 13.69,
+    "y": -2.81,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "55",
+    "fixtureAngle": -180,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 10.87,
+    "y": 3.96,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.92,
+    "shelfCode": "56",
+    "fixtureAngle": -90,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 8.59,
+    "y": 4.2,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "57",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 8.59,
+    "y": 3.3,
+    "fixtureWidth": 0.75,
+    "fixtureDepth": 0.91,
+    "shelfCode": "58",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 10.87,
+    "y": 5.37,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.92,
+    "shelfCode": "59",
+    "fixtureAngle": -90,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 12.98,
+    "y": 5.63,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "60",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 12.98,
+    "y": 2.79,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "61",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 8.55,
+    "y": 5.63,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "62",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 10.87,
+    "y": 6.8,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.92,
+    "shelfCode": "63",
+    "fixtureAngle": -90,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 12.97,
+    "y": 4.2,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.91,
+    "shelfCode": "64",
+    "fixtureAngle": -270,
+    "fixtureType": "StandardShelf"
+  },
+  {
+    "x": 7.67,
+    "y": 2.84,
+    "fixtureWidth": 0.9,
+    "fixtureDepth": 0.3,
+    "shelfCode": "65",
+    "fixtureAngle": 0,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 11.48,
+    "y": -0.45,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.3,
+    "shelfCode": "66",
+    "fixtureAngle": -270,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 15.21,
+    "y": 5.97,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.3,
+    "shelfCode": "67",
+    "fixtureAngle": -90,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 12.5,
+    "y": 7.35,
+    "fixtureWidth": 0.5,
+    "fixtureDepth": 0.3,
+    "shelfCode": "68",
+    "fixtureAngle": -180,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 15.21,
+    "y": 4.55,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.3,
+    "shelfCode": "69",
+    "fixtureAngle": -90,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 15.21,
+    "y": 7.35,
+    "fixtureWidth": 1.25,
+    "fixtureDepth": 0.3,
+    "shelfCode": "70",
+    "fixtureAngle": -90,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 11.86,
+    "y": 7.35,
+    "fixtureWidth": 0.5,
+    "fixtureDepth": 0.3,
+    "shelfCode": "71",
+    "fixtureAngle": -180,
+    "fixtureType": "SlantedShelf"
+  },
+  {
+    "x": 14.09,
+    "y": 0.85,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "72",
+    "fixtureAngle": 0,
+    "fixtureType": "CircularStand"
+  },
+  {
+    "x": 13.39,
+    "y": -0.24,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "73",
+    "fixtureAngle": 0,
+    "fixtureType": "CircularStand"
+  },
+  {
+    "x": 11.74,
+    "y": 8.64,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "74",
+    "fixtureAngle": 0,
+    "fixtureType": "CircularStand"
+  },
+  {
+    "x": 7.46,
+    "y": 7.4,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "75",
+    "fixtureAngle": 0,
+    "fixtureType": "CircularStand"
+  },
+  {
+    "x": 14.613079999999998,
+    "y": -0.325007,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "76",
+    "fixtureAngle": 0,
+    "fixtureType": "CircularStand"
+  },
+  {
+    "x": 17.99,
+    "y": -1.02,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "77",
+    "fixtureAngle": -130,
+    "fixtureType": "Refridgerator"
+  },
+  {
+    "x": 18.27628,
+    "y": 1.14,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "78",
+    "fixtureAngle": -90,
+    "fixtureType": "Refridgerator"
+  },
+  {
+    "x": 16.5,
+    "y": -2.58,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "79",
+    "fixtureAngle": -170,
+    "fixtureType": "Refridgerator"
+  },
+  {
+    "x": 18.31,
+    "y": 0.03,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "80",
+    "fixtureAngle": -110,
+    "fixtureType": "Refridgerator"
+  },
+  {
+    "x": 17.39,
+    "y": -1.9,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "81",
+    "fixtureAngle": -150,
+    "fixtureType": "Refridgerator"
+  },
+  {
+    "x": 15.37,
+    "y": -2.82,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "82",
+    "fixtureAngle": -180,
+    "fixtureType": "Refridgerator"
+  },
+  {
+    "x": 18.16,
+    "y": 6.45811,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "83",
+    "fixtureAngle": -90,
+    "fixtureType": "Checkout"
+  },
+  {
+    "x": 18.19894,
+    "y": 7.83,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "84",
+    "fixtureAngle": -90,
+    "fixtureType": "Checkout"
+  },
+  {
+    "x": 18.16,
+    "y": 5.18,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "85",
+    "fixtureAngle": -90,
+    "fixtureType": "Checkout"
+  },
+  {
+    "x": 18.16,
+    "y": 3.95,
+    "fixtureWidth": 1.0,
+    "fixtureDepth": 1.0,
+    "shelfCode": "86",
+    "fixtureAngle": -90,
+    "fixtureType": "Checkout"
+  }
+]
