@@ -1,5 +1,5 @@
 # Agent-based model for COVID-19 transmission in supermarkets. 
- This code accompanies the paper "COVID-19 transmission in supermarkets using agent-based modelling".
+This code accompanies the paper ["Modelling COVID-19 transmission in supermarkets using an agent-based model"](https://arxiv.org/abs/2010.07868).
 
 # Install
 ```bash
