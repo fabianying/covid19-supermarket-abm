@@ -1,10 +1,15 @@
+import datetime
+import io
 import multiprocessing
+import os
+import uuid
 from itertools import repeat
 
 import networkx as nx
 import numpy as np
 import pandas as pd
 import simpy
+import logging
 from tqdm import tqdm
 
 from covid19_supermarket_abm.core import Store, _customer_arrivals, _stats_recorder, \
@@ -12,9 +17,34 @@ from covid19_supermarket_abm.core import Store, _customer_arrivals, _stats_recor
 from covid19_supermarket_abm.utils import istarmap  # enable progress bar with multiprocessing
 
 
+def set_up_logger(logfilepath):
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    # file_handler = logging.FileHandler(logfilepath)
+    # file_handler.setLevel(logging.INFO)
+    # file_handler.setFormatter(formatter)
+    # logger.addHandler(file_handler)
+    log_capture_string = io.StringIO()
+    ch = logging.StreamHandler(log_capture_string)
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    return logger, log_capture_string
+
+
 def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list):
     # Get parameters
-    logging_enabled= config.get('logging_enabled', False)
+    logging_enabled = config.get('logging_enabled', False)
+    log_capture_string = None
+    if logging_enabled:
+        log_dir = config.get('log_directory', '.')
+        time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+        log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
+        # print(f'logging enabled and printed in {log_name}')
+        logger, log_capture_string = set_up_logger(os.path.join(log_dir, log_name))
+
     num_hours_open = config.get('num_hours_open', 12)
     with_node_capacity = config.get('with_node_capacity', False)
     max_customers_in_store_per_sqm = config.get('max_customers_in_store_per_sqm', None)
@@ -23,13 +53,13 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
         max_customers_in_store = config.get('max_customers_in_store', None)
     else:
         if floorarea is not None:
-            max_customers_in_store = int(max_customers_in_store_per_sqm * floorarea )
+            max_customers_in_store = int(max_customers_in_store_per_sqm * floorarea)
         else:
             raise ValueError('If you set the parameter "max_customers_in_store_per_sqm", '
                              'you need to specify the floor area via the "floorarea" parameter in the config.')
 
     env = simpy.Environment()
-    store = Store(env, G, logging_enabled=logging_enabled, max_customers_in_store=max_customers_in_store)
+    store = Store(env, G, max_customers_in_store=max_customers_in_store)
     if with_node_capacity:
         node_capacity = config.get('node_capacity', 2)
         store.enable_node_capacity(node_capacity)
@@ -37,10 +67,10 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     path_generator = path_generator_function(*path_generator_args)
     env.process(_customer_arrivals(env, store, path_generator, config))
     env.process(_stats_recorder(store))
-    env.run(until=num_hours_open * 60 * 4)
+    env.run(until=num_hours_open * 60 * 10)
 
     # Record stats
-    _sanity_checks(store)
+    _sanity_checks(store, log_capture_string)
     num_cust = len(store.customers)
     num_S = len(store.number_encounters_with_infected)
     shopping_times = list(store.shopping_times.values())
@@ -83,7 +113,7 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
 
 
 def simulate_several_days(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list,
-                          num_iterations: int = 10000, use_parallel: bool = False):
+                          num_iterations: int = 1000, use_parallel: bool = False):
     if use_parallel:
         args = [config, G, path_generator_function, path_generator_args]
         repeated_args = zip(*[repeat(item, num_iterations) for item in args])
@@ -107,8 +137,8 @@ def simulate_several_days(config: dict, G: nx.Graph, path_generator_function, pa
     cols_to_record = [key for key, val in results_dict.items()
                       if isinstance(val, (int, np.integer)) or isinstance(val, (float, np.float))]
     cols_not_recording = [key for key in results_dict.keys() if key not in cols_to_record]
-    print(f'Recording stats for {cols_to_record}.')
-    print(f'We are not recording {cols_not_recording}.')
+    logging.info(f'Recording stats for {cols_to_record}.')
+    logging.info(f'We are not recording {cols_not_recording}.')
     for stat in cols_to_record:
         stats_dict[stat] = []
 

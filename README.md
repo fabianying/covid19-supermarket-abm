@@ -28,7 +28,7 @@ zone_paths = load_example_paths()
 G = load_example_store_graph()
 
 # Create a path generator function which feeds our model with customer paths
-path_generator_function, path_generator_args = get_path_generator(G, zone_paths)
+path_generator_function, path_generator_args = get_path_generator(G, zone_paths=zone_paths)
 
 # Simulate a day and store results in results
 results_dict = simulate_one_day(config, G, path_generator_function, path_generator_args)

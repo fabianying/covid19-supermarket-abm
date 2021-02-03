@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
-from covid19_supermarket_abm.utils.load_example_data import get_floor_area
+from covid19_supermarket_abm.utils_for_paper.load_graph import get_floor_area
 
 
 def load_data(config_name, param, num_iterations, truncate=False, use_old_data=False):

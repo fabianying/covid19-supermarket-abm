@@ -1,5 +1,7 @@
+import datetime
 import logging
 import random
+import uuid
 from typing import List, Optional
 
 import networkx as nx
@@ -10,8 +12,7 @@ import simpy
 class Store(object):
     """Store object that captures the state of the store"""
 
-    def __init__(self, env: simpy.Environment, G: nx.Graph, max_customers_in_store: Optional[int] = None,
-                 logging_enabled: bool = True, ):
+    def __init__(self, env: simpy.Environment, G: nx.Graph, max_customers_in_store: Optional[int] = None):
         """
 
         :param env: Simpy environment on which the simulation runs
@@ -25,7 +26,6 @@ class Store(object):
         self.customers = []
         self.infected_customers = []
         self.env = env
-        self.logging_enabled = logging_enabled
         self.number_encounters_with_infected = {}
         self.number_encounters_per_node = {node: 0 for node in self.G}
         self.arrival_times = {}
@@ -206,8 +206,7 @@ class Store(object):
         return f'{self.env.now:.4f}'
 
     def log(self, string: str):
-        if self.logging_enabled:
-            logging.info(f'[Time: {self.now()}] ' + string)
+        logging.info(f'[Time: {self.now()}] ' + string)
 
 
 def customer(env: simpy.Environment, customer_id: int, infected: bool, store: Store, path: List[int],
@@ -283,30 +282,48 @@ def _customer_arrivals(env: simpy.Environment, store: Store, path_generator, con
     store.close_store()
 
 
-def _sanity_checks(store: Store, verbose: bool = False):
+def _sanity_checks(store: Store, log_capture_string=None):
     infectious_contacts_list = [i for i in store.number_encounters_with_infected.values() if i != 0]
     num_susceptible = len(store.number_encounters_with_infected)
     num_infected = len(store.infected_customers)
     num_cust = len(store.customers)
-    assert sum(infectious_contacts_list) == sum(store.number_encounters_per_node.values()), \
-        "Number of infectious contacts doesn't add up"
-    assert num_infected + num_susceptible == num_cust, \
-        "Number of infected and susceptible customers doesn't add up to total number of customers"
 
-    customers_at_nodes = [len(val) for val in store.infected_customers_at_nodes.values()]
-    assert max(customers_at_nodes) == 0, \
-        f"{sum(customers_at_nodes)} customers have not left the store. {store.infected_customers_at_nodes}"
-    assert max([len(val) for val in store.customers_at_nodes.values()]) == 0
-    assert set(store.waiting_times.keys()) == set(store.customers), \
-        'Some customers are not recorded in waiting times (or vice versa)'
-    assert all([val >= 0 for val in store.waiting_times.values()]), \
-        'Some waiting times are negative!'
-    actual_max_customer_in_store = max(store.stats['num_customers_in_store'].values())
-    assert actual_max_customer_in_store <= store.max_customers_in_store, \
-        f'Somehow more people were in the store than allowed ' + \
-        f'(Allowed: {store.max_customers_in_store} | Actual: {actual_max_customer_in_store})'
+    try:
+        assert sum(infectious_contacts_list) == sum(store.number_encounters_per_node.values()), \
+            "Number of infectious contacts doesn't add up"
+        assert num_infected + num_susceptible == num_cust, \
+            "Number of infected and susceptible customers doesn't add up to total number of customers"
 
-    assert store.num_customers_waiting_outside == 0, \
-        f"Somehow, there are still {store.num_customers_waiting_outside} people waiting outside"
-    if verbose:
-        print('Sanity checks passed!')
+        customers_at_nodes = [len(val) for val in store.infected_customers_at_nodes.values()]
+        assert max(customers_at_nodes) == 0, \
+            f"{sum(customers_at_nodes)} customers have not left the store. {store.infected_customers_at_nodes}"
+        assert max([len(val) for val in store.customers_at_nodes.values()]) == 0, \
+        f"{sum(customers_at_nodes)} customers have not left the store. {store.customers_at_nodes}"
+        assert set(store.waiting_times.keys()) == set(store.customers), \
+            'Some customers are not recorded in waiting times (or vice versa)'
+        assert all([val >= 0 for val in store.waiting_times.values()]), \
+            'Some waiting times are negative!'
+        actual_max_customer_in_store = max(store.stats['num_customers_in_store'].values())
+        assert actual_max_customer_in_store <= store.max_customers_in_store, \
+            f'Somehow more people were in the store than allowed ' + \
+            f'(Allowed: {store.max_customers_in_store} | Actual: {actual_max_customer_in_store})'
+
+        assert store.num_customers_waiting_outside == 0, \
+            f"Somehow, there are still {store.num_customers_waiting_outside} people waiting outside"
+
+        raise RuntimeError("Test error")
+    except Exception as e:
+        print(f'Sanity checks NOT passed. Something went wrong.')
+        logging.error('Error occurred!', exc_info=True)
+        if log_capture_string is not None:
+            time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+            log_name = f'log_{time_string}_{uuid.uuid4().hex}_errors.log'
+            print(f'Saving logs to {log_name}')
+            log_contents = log_capture_string.getvalue()
+            log_capture_string.close()
+            with open(log_name, 'w') as f:
+                f.write(log_contents)
+        # if log_name is not None:
+        #     print(f'See logs for the full run: {log_name}')
+        raise e
+    logging.info('Sanity checks passed!')
