@@ -206,7 +206,7 @@ class Store(object):
         return f'{self.env.now:.4f}'
 
     def log(self, string: str):
-        logging.info(f'[Time: {self.now()}] ' + string)
+        logging.debug(f'[Time: {self.now()}] ' + string)
 
 
 def customer(env: simpy.Environment, customer_id: int, infected: bool, store: Store, path: List[int],

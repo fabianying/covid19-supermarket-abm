@@ -19,7 +19,7 @@ from covid19_supermarket_abm.utils import istarmap  # enable progress bar with m
 
 def set_up_logger(logfilepath):
     logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     # file_handler = logging.FileHandler(logfilepath)
@@ -36,14 +36,14 @@ def set_up_logger(logfilepath):
 
 def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list):
     # Get parameters
-    logging_enabled = config.get('logging_enabled', False)
-    log_capture_string = None
-    if logging_enabled:
-        log_dir = config.get('log_directory', '.')
-        time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-        log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
-        # print(f'logging enabled and printed in {log_name}')
-        logger, log_capture_string = set_up_logger(os.path.join(log_dir, log_name))
+    # logging_enabled = config.get('logging_enabled', False)
+    # log_capture_string = None
+    # if logging_enabled:
+    log_dir = config.get('log_directory', '.')
+    time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
+    # print(f'logging enabled and printed in {log_name}')
+    logger, log_capture_string = set_up_logger(os.path.join(log_dir, log_name))
 
     num_hours_open = config.get('num_hours_open', 12)
     with_node_capacity = config.get('with_node_capacity', False)
