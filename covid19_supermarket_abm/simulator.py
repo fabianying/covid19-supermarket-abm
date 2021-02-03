@@ -31,20 +31,25 @@ def set_up_logger(log_name):
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(formatter)
     logger.addHandler(ch)
+    logger.propagate = False
     return logger, log_capture_string
 
 
 def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list):
     # Get parameters
-    # logging_enabled = config.get('logging_enabled', False)
-    # log_capture_string = None
+    logging_enabled = config.get('logging_enabled', False)
+    log_capture_string = None
+    # logger = None
     # if logging_enabled:
-    # log_dir = config.get('log_directory', '.')
-    time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
-    # print(f'logging enabled and printed in {log_name}')
-    # os.path.join(log_dir, log_name)
-    logger, log_capture_string = set_up_logger(log_name)
+    #     # log_dir = config.get('log_directory', '.')
+    #     time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    #     log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
+    #     # print(f'logging enabled and printed in {log_name}')
+    #     # os.path.join(log_dir, log_name)
+    #     logger = None
+    #     # logger, log_capture_string = set_up_logger(log_name)
+    # else:
+    #     logger = None
 
     num_hours_open = config.get('num_hours_open', 12)
     with_node_capacity = config.get('with_node_capacity', False)
@@ -60,7 +65,7 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
                              'you need to specify the floor area via the "floorarea" parameter in the config.')
 
     env = simpy.Environment()
-    store = Store(env, G, max_customers_in_store=max_customers_in_store, logger=logger)
+    store = Store(env, G, max_customers_in_store=max_customers_in_store, logging_enabled=logging_enabled)
     if with_node_capacity:
         node_capacity = config.get('node_capacity', 2)
         store.enable_node_capacity(node_capacity)
@@ -71,7 +76,9 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     env.run(until=num_hours_open * 60 * 10)
 
     # Record stats
-    _sanity_checks(store, logger, log_capture_string, log_name)
+    raise_test_error = config.get('raise_test_error', False)
+    # _sanity_checks(store, logger, log_capture_string, raise_test_error=raise_test_error)
+    _sanity_checks(store, raise_test_error=raise_test_error)
     num_cust = len(store.customers)
     num_S = len(store.number_encounters_with_infected)
     shopping_times = list(store.shopping_times.values())

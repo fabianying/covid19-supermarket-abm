@@ -12,7 +12,9 @@ import simpy
 class Store(object):
     """Store object that captures the state of the store"""
 
-    def __init__(self, env: simpy.Environment, G: nx.Graph, max_customers_in_store: Optional[int] = None, logger = None):
+    def __init__(self, env: simpy.Environment, G: nx.Graph, max_customers_in_store: Optional[int] = None,
+                 logging_enabled: bool = False,
+                 logger: Optional[logging._loggerClass] = None):
         """
 
         :param env: Simpy environment on which the simulation runs
@@ -42,6 +44,9 @@ class Store(object):
         self.total_time_crowded = 0
         self.crowded_thres = 4
         self.node_is_crowded_since = {node: None for node in self.G}  # is None if not crowded, else it's the start time
+        self.logs = []
+        self.logging_enabled = logging_enabled
+        self.logger = logger
 
         # Parameters
         self.node_capacity = np.inf
@@ -50,10 +55,10 @@ class Store(object):
             self.max_customers_in_store = np.inf
         else:
             self.max_customers_in_store = int(max_customers_in_store)
-        if logger is None:
-            self.logger = logging.getLogger()
-        else:
-            self.logger = logger
+        # if logger is None:
+        #     self.logging_enabled = False
+        # else:
+        #     self.logging_enabled = True
         self.counter = simpy.Resource(self.env, capacity=self.max_customers_in_store)
 
         # For profiling purposes
@@ -210,7 +215,10 @@ class Store(object):
         return f'{self.env.now:.4f}'
 
     def log(self, string: str):
-        self.logger.debug(f'[Time: {self.now()}] ' + string)
+        if self.logging_enabled:
+            self.logs.append(f'[Time: {self.now()}] ' + string)
+        if self.logger is not None:
+            self.logger.debug(f'[Time: {self.now()}] ' + string)
 
 
 def customer(env: simpy.Environment, customer_id: int, infected: bool, store: Store, path: List[int],
@@ -286,7 +294,9 @@ def _customer_arrivals(env: simpy.Environment, store: Store, path_generator, con
     store.close_store()
 
 
-def _sanity_checks(store: Store, logger, log_capture_string=None, log_name=None):
+def _sanity_checks(store: Store,
+                   # logger: Optional[logging._loggerClass] = None, log_capture_string=None,
+                   raise_test_error=False):
     infectious_contacts_list = [i for i in store.number_encounters_with_infected.values() if i != 0]
     num_susceptible = len(store.number_encounters_with_infected)
     num_infected = len(store.infected_customers)
@@ -314,20 +324,23 @@ def _sanity_checks(store: Store, logger, log_capture_string=None, log_name=None)
 
         assert store.num_customers_waiting_outside == 0, \
             f"Somehow, there are still {store.num_customers_waiting_outside} people waiting outside"
-
-        # raise RuntimeError("Test error")
+        if raise_test_error:
+            raise RuntimeError("Test error")
     except Exception as e:
         print(f'Sanity checks NOT passed. Something went wrong.')
-        logger.error('Error occurred!', exc_info=True)
-        if log_name is not None:
-            # time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-            # log_name = f'log_{time_string}_{uuid.uuid4().hex}_errors.log'
-            print(f'Saving logs to {log_name}')
-            log_contents = log_capture_string.getvalue()
-            log_capture_string.close()
-            with open(log_name, 'w') as f:
-                f.write(log_contents)
-        # if log_name is not None:
-        #     print(f'See logs for the full run: {log_name}')
-        raise e
-    logger.info('Sanity checks passed!')
+        # if logger is not None:
+        #     logger.error('Error occurred!', exc_info=True)
+        #     log_name = logger.name
+        #     print(f'Saving logs to {log_name}')
+        #     log_contents = log_capture_string.getvalue()
+        #     log_capture_string.close()
+        #     with open(log_name, 'w') as f:
+                # f.write(log_contents)
+        time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+        log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
+        with open(log_name, 'w') as f:
+            f.write('\n'.join(store.logs))
+        if not raise_test_error:
+            raise e
+    if store.logger is not None:
+        store.logger.info('Sanity checks passed!')
