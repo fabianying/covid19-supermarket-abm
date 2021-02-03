@@ -311,7 +311,7 @@ def _sanity_checks(store: Store, log_capture_string=None):
         assert store.num_customers_waiting_outside == 0, \
             f"Somehow, there are still {store.num_customers_waiting_outside} people waiting outside"
 
-        raise RuntimeError("Test error")
+        # raise RuntimeError("Test error")
     except Exception as e:
         print(f'Sanity checks NOT passed. Something went wrong.')
         logging.error('Error occurred!', exc_info=True)
