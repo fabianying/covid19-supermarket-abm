@@ -3,20 +3,20 @@ from random import seed
 import numpy as np
 import logging
 import sys
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setLevel(logging.WARNING)
-stdout_handler.setFormatter(formatter)
-
-file_handler = logging.FileHandler('simulation_logs.log')
-file_handler.setLevel(logging.INFO)
-file_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
-logger.addHandler(stdout_handler)
+# logger = logging.getLogger()
+# logger.setLevel(logging.INFO)
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#
+# stdout_handler = logging.StreamHandler(sys.stdout)
+# stdout_handler.setLevel(logging.WARNING)
+# stdout_handler.setFormatter(formatter)
+#
+# file_handler = logging.FileHandler('simulation_logs.log')
+# file_handler.setLevel(logging.INFO)
+# file_handler.setFormatter(formatter)
+#
+# logger.addHandler(file_handler)
+# logger.addHandler(stdout_handler)
 
 from covid19_supermarket_abm.path_generators import get_path_generator
 from covid19_supermarket_abm.simulator import simulate_one_day, simulate_several_days
@@ -39,16 +39,16 @@ G = load_example_store_graph()
 
 # Decide how paths are generated; by default we take the empirical paths
 path_generator_function, path_generator_args = get_path_generator(G, zone_paths=zone_paths)
-results_dict = simulate_one_day(config, G, path_generator_function, path_generator_args)
-for key, val in results_dict.items():
-    print(key)
-    print(val)
+# results_dict = simulate_one_day(config, G, path_generator_function, path_generator_args)
+# for key, val in results_dict.items():
+#     print(key)
+#     print(val)
 
-print(list(results_dict.keys()))
+# print(list(results_dict.keys()))
 
-# df_cust, df_encounter_stats, df_encounter_time_stats = simulate_several_days(config, G, path_generator_function,
-#                                                                              path_generator_args, num_iterations=4,
-#                                                                              use_parallel=True)
-# print(df_cust)
-# print(df_encounter_stats)
-# print(df_encounter_time_stats)
+df_cust, df_encounter_stats, df_encounter_time_stats = simulate_several_days(config, G, path_generator_function,
+                                                                             path_generator_args, num_iterations=4,
+                                                                             use_parallel=True)
+print(df_cust)
+print(df_encounter_stats)
+print(df_encounter_time_stats)

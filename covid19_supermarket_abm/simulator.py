@@ -17,8 +17,8 @@ from covid19_supermarket_abm.core import Store, _customer_arrivals, _stats_recor
 from covid19_supermarket_abm.utils import istarmap  # enable progress bar with multiprocessing
 
 
-def set_up_logger(logfilepath):
-    logger = logging.getLogger()
+def set_up_logger(log_name):
+    logger = logging.getLogger(log_name)
     logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -39,11 +39,12 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     # logging_enabled = config.get('logging_enabled', False)
     # log_capture_string = None
     # if logging_enabled:
-    log_dir = config.get('log_directory', '.')
+    # log_dir = config.get('log_directory', '.')
     time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
     # print(f'logging enabled and printed in {log_name}')
-    logger, log_capture_string = set_up_logger(os.path.join(log_dir, log_name))
+    # os.path.join(log_dir, log_name)
+    logger, log_capture_string = set_up_logger(log_name)
 
     num_hours_open = config.get('num_hours_open', 12)
     with_node_capacity = config.get('with_node_capacity', False)
@@ -59,7 +60,7 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
                              'you need to specify the floor area via the "floorarea" parameter in the config.')
 
     env = simpy.Environment()
-    store = Store(env, G, max_customers_in_store=max_customers_in_store)
+    store = Store(env, G, max_customers_in_store=max_customers_in_store, logger=logger)
     if with_node_capacity:
         node_capacity = config.get('node_capacity', 2)
         store.enable_node_capacity(node_capacity)
@@ -70,7 +71,7 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     env.run(until=num_hours_open * 60 * 10)
 
     # Record stats
-    _sanity_checks(store, log_capture_string)
+    _sanity_checks(store, logger, log_capture_string, log_name)
     num_cust = len(store.customers)
     num_S = len(store.number_encounters_with_infected)
     shopping_times = list(store.shopping_times.values())
