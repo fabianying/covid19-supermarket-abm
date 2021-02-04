@@ -255,7 +255,7 @@ def customer(env: simpy.Environment, customer_id: int, infected: bool, store: St
             return
 
         if my_turn_to_enter in result:
-            store.log(f'Customer {customer_id} enters the shop after waiting {wait :.2f} min.')
+            store.log(f'Customer {customer_id} enters the shop after waiting {wait :.2f} min with shopping path {path}.')
             start_node = path[0]
             store.add_customer(customer_id, start_node, infected, wait)
             for start, end in zip(path[:-1], path[1:]):
