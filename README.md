@@ -65,6 +65,7 @@ Key | Description
 `store_open_length` | Length of the store's opening hours
 `df_exposure_time_per_node` | Dataframe containing the exposure time per node
 `total_time_crowded` | Total time that nodes were crowded (when there are more than `thres` number of customers in a node. Default value of `thres` is 3)
+`exposure_times` | List of exposure times of customers (only recording positive exposure times)
  
  # Questions?
  
