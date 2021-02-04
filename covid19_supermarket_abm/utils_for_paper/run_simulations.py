@@ -70,21 +70,21 @@ def load_data_for_sim(store_id, graph_params, data_dir):
 def run_several_simulations(config_name, num_iterations, multiplier_list, param='arrival_rate',
                             config_dir='.', data_dir='.', results_dir='.'):
     """Run several simulations where we vary over a specific parameter."""
+
+    # Load data and set parameters
     config_filename = os.path.join(config_dir, f"{config_name}.json")
     config_original = json.load(open(config_filename))
     logging.info(f'Loaded config file: {config_filename}')
     store_id = config_original['store_id']
     path_generation = config_original.get('path_generation', 'synthetic')
-
-    # load data
     G, extra_outputs = load_data_for_sim(store_id, config_original, data_dir)
+    path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
+                                                                      synthetic_path_generator_args=extra_outputs)
 
     # Do simulations
     for multiplier in multiplier_list:
         config = config_original.copy()
         config[param] *= multiplier
-        path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
-                                                                          synthetic_path_generator_args=extra_outputs)
         df_cust, df_num_encounter_per_node_stats, df_exposure_time_per_node_stats = simulate_several_days(config, G, path_generator_function,
                                                                                      path_generator_args,
                                                                                      num_iterations=num_iterations)
@@ -111,16 +111,22 @@ def run_several_simulations(config_name, num_iterations, multiplier_list, param=
 def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir='.', data_dir='.', results_dir='.'):
     """Make one simulation with no multipliers."""
     print('Running simulation with no modified parameters')
-    config_original = json.load(open(os.path.join(config_dir, f"{config_name}.json")))
+    config_filename = os.path.join(config_dir, f"{config_name}.json")
+    config_original = json.load(open(config_filename))
+    config = config_original
+    logging.info(f'Loaded config file: {config_filename}')
     store_id = config_original['store_id']
-
-    # Load data
-    all_zone_paths, G = load_data_for_sim(store_id, graph_params=config_original, data_dir=data_dir)
+    path_generation = config_original.get('path_generation', 'synthetic')
+    G, extra_outputs = load_data_for_sim(store_id, config_original, data_dir)
+    path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
+                                                                      synthetic_path_generator_args=extra_outputs)
 
     # Do simulations
-    df_cust, df_encounter_stats, df_encounter_time_stats = simulate_several_days(config_original, all_zone_paths,
-                                                                                 G,
-                                                                                 num_iterations=num_iterations)
+    df_cust, df_num_encounter_per_node_stats, df_exposure_time_per_node_stats = simulate_several_days(config, G,
+                                                                                                      path_generator_function,
+                                                                                                      path_generator_args,
+                                                                                                      num_iterations=num_iterations)
+
     results_folder = os.path.join(results_dir, 'results')
     if not os.path.isdir(results_folder):
         print(f'Created {results_folder}')
@@ -129,10 +135,10 @@ def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir=
     # Save results
     filename1 = os.path.join(results_folder, f'{config_name}_{num_iterations}_1.parquet')
     df_cust.to_parquet(filename1)
-    df_encounter_stats.columns = df_encounter_stats.columns.astype(str)
+    df_num_encounter_per_node_stats.columns = df_num_encounter_per_node_stats.columns.astype(str)
     filename2 = os.path.join(results_folder, f'{config_name}_{num_iterations}_2.parquet')
-    df_encounter_stats.to_parquet(filename2)
-    df_encounter_time_stats.columns = df_encounter_time_stats.columns.astype(str)
+    df_num_encounter_per_node_stats.to_parquet(filename2)
+    df_exposure_time_per_node_stats.columns = df_exposure_time_per_node_stats.columns.astype(str)
     filename3 = os.path.join(results_folder, f'{config_name}_{num_iterations}_3.parquet')
-    df_encounter_time_stats.to_parquet(filename3)
+    df_exposure_time_per_node_stats.to_parquet(filename3)
     print(f'Results saved in {filename1}, {filename2}, {filename3}.')
