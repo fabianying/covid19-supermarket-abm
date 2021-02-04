@@ -13,6 +13,10 @@ from covid19_supermarket_abm.utils.create_synthetic_store_network import create_
     create_large_store
 from covid19_supermarket_abm.utils_for_paper.load_graph import load_store_graph
 
+"""
+Functions to run simulations and save results
+"""
+
 
 def load_data_for_sim(store_id, graph_params, data_dir):
     # load data
@@ -81,7 +85,7 @@ def run_several_simulations(config_name, num_iterations, multiplier_list, param=
         config[param] *= multiplier
         path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
                                                                           synthetic_path_generator_args=extra_outputs)
-        df_cust, df_encounter_stats, df_encounter_time_stats = simulate_several_days(config, G, path_generator_function,
+        df_cust, df_num_encounter_per_node_stats, df_exposure_time_per_node_stats = simulate_several_days(config, G, path_generator_function,
                                                                                      path_generator_args,
                                                                                      num_iterations=num_iterations)
 
@@ -94,20 +98,20 @@ def run_several_simulations(config_name, num_iterations, multiplier_list, param=
         filename1 = os.path.join(results_folder, f'{config_name}_{multiplier * 100:.0f}_{num_iterations}_1.parquet')
         df_cust.to_parquet(filename1)
 
-        df_encounter_stats.columns = df_encounter_stats.columns.astype(str)
+        df_num_encounter_per_node_stats.columns = df_num_encounter_per_node_stats.columns.astype(str)
         filename2 = os.path.join(results_folder, f'{config_name}_{multiplier * 100:.0f}_{num_iterations}_2.parquet')
-        df_encounter_stats.to_parquet(filename2)
+        df_num_encounter_per_node_stats.to_parquet(filename2)
 
-        df_encounter_time_stats.columns = df_encounter_time_stats.columns.astype(str)
+        df_exposure_time_per_node_stats.columns = df_exposure_time_per_node_stats.columns.astype(str)
         filename3 = os.path.join(results_folder, f'{config_name}_{multiplier * 100:.0f}_{num_iterations}_3.parquet')
-        df_encounter_time_stats.to_parquet(filename3)
+        df_exposure_time_per_node_stats.to_parquet(filename3)
         logging.info(f'Results saved in {filename1}, {filename2}, {filename3}.')
 
 
-def run_one_simulation_and_record_stats(config_name, num_iterations, root_dir='.', data_dir='.'):
+def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir='.', data_dir='.', results_dir='.'):
     """Make one simulation with no multipliers."""
     print('Running simulation with no modified parameters')
-    config_original = json.load(open(os.path.join(root_dir, f"{config_name}.json")))
+    config_original = json.load(open(os.path.join(config_dir, f"{config_name}.json")))
     store_id = config_original['store_id']
 
     # Load data
@@ -117,7 +121,7 @@ def run_one_simulation_and_record_stats(config_name, num_iterations, root_dir='.
     df_cust, df_encounter_stats, df_encounter_time_stats = simulate_several_days(config_original, all_zone_paths,
                                                                                  G,
                                                                                  num_iterations=num_iterations)
-    results_folder = os.path.join(root_dir, 'results')
+    results_folder = os.path.join(results_dir, 'results')
     if not os.path.isdir(results_folder):
         print(f'Created {results_folder}')
         os.mkdir(results_folder)

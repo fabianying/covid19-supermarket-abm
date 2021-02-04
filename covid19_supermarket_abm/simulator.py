@@ -40,23 +40,7 @@ from covid19_supermarket_abm.utils import istarmap  # enable progress bar with m
 def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list):
     # Get parameters
     logging_enabled = config.get('logging_enabled', False)
-    # if logging_enabled:
-    #     time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    #     log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
-    #     logger = set_up_logger(log_name)
-    log_capture_string = None
-    # logger = None
-    # if logging_enabled:
-    #     # log_dir = config.get('log_directory', '.')
-    #     time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    #     log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
-    #     # print(f'logging enabled and printed in {log_name}')
-    #     # os.path.join(log_dir, log_name)
-    #     logger = None
-    #     # logger, log_capture_string = set_up_logger(log_name)
-    # else:
-    #     logger = None
-
+    raise_test_error = config.get('raise_test_error', False)  # for debugging purposes
     num_hours_open = config.get('num_hours_open', 12)
     with_node_capacity = config.get('with_node_capacity', False)
     max_customers_in_store_per_sqm = config.get('max_customers_in_store_per_sqm', None)
@@ -70,20 +54,18 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
             raise ValueError('If you set the parameter "max_customers_in_store_per_sqm", '
                              'you need to specify the floor area via the "floorarea" parameter in the config.')
 
+    # Set up environment and run
     env = simpy.Environment()
     store = Store(env, G, max_customers_in_store=max_customers_in_store, logging_enabled=logging_enabled)
     if with_node_capacity:
         node_capacity = config.get('node_capacity', 2)
         store.enable_node_capacity(node_capacity)
-
     path_generator = path_generator_function(*path_generator_args)
     env.process(_customer_arrivals(env, store, path_generator, config))
     env.process(_stats_recorder(store))
     env.run(until=num_hours_open * 60 * 10)
 
     # Record stats
-    raise_test_error = config.get('raise_test_error', False)
-    # _sanity_checks(store, logger, log_capture_string, raise_test_error=raise_test_error)
     _sanity_checks(store, raise_test_error=raise_test_error)
     num_cust = len(store.customers)
     num_S = len(store.number_encounters_with_infected)
@@ -97,14 +79,15 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
         mean_waiting_time = 0
 
     num_contacts_per_cust = [contacts for contacts in store.number_encounters_with_infected.values() if contacts != 0]
-    df_num_encounters = pd.DataFrame(store.number_encounters_per_node, index=[0])
-    df_num_encounters = df_num_encounters[range(len(G))]
-    df_time_with_infected = pd.DataFrame(store.time_with_infected_per_node, index=[0])
-    df_time_with_infected = df_time_with_infected[range(len(G))]
+    df_num_encounters_per_node = pd.DataFrame(store.number_encounters_per_node, index=[0])
+    df_num_encounters_per_node = df_num_encounters_per_node[range(len(G))]
+    df_exposure_time_per_node = pd.DataFrame(store.time_with_infected_per_node, index=[0])
+    df_exposure_time_per_node = df_exposure_time_per_node[range(len(G))]
+    exposure_times = [val for val in list(store.time_with_infected_per_customer.values()) if val > 0]
     results = {'num_cust': num_cust,
                'num_S': num_S,
                'num_I': num_cust - num_S,
-               'total_time_with_infected': sum(store.time_with_infected.values()),
+               'total_time_with_infected': sum(store.time_with_infected_per_customer.values()),
                'num_contacts_per_cust': num_contacts_per_cust,
                'num_cust_w_contact': len(num_contacts_per_cust),
                'mean_num_cust_in_store': np.mean(list(store.stats['num_customers_in_store'].values())),
@@ -115,9 +98,10 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
                'num_waiting_people': num_waiting_people,
                'mean_waiting_time': mean_waiting_time,
                'store_open_length': max(list(store.stats['num_customers_in_store'].keys())),
-               'df_num_encounters': df_num_encounters,
-               'df_time_with_infected': df_time_with_infected,
-               'total_time_crowded': store.total_time_crowded
+               'df_num_encounters_per_node': df_num_encounters_per_node,
+               'df_exposure_time_per_node': df_exposure_time_per_node,
+               'total_time_crowded': store.total_time_crowded,
+               'exposure_times': exposure_times,
                }
 
     if floorarea is not None:
@@ -128,6 +112,9 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
 
 def simulate_several_days(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list,
                           num_iterations: int = 1000, use_parallel: bool = False):
+    """Run several simulations and return selected number of stats from these simulations"""
+
+    # Run simulations
     if use_parallel:
         args = [config, G, path_generator_function, path_generator_args]
         repeated_args = zip(*[repeat(item, num_iterations) for item in args])
@@ -144,26 +131,28 @@ def simulate_several_days(config: dict, G: nx.Graph, path_generator_function, pa
             results_dict = simulate_one_day(config, G, path_generator_function, path_generator_args)
             results.append(results_dict)
 
-    # Initialize
-    df_num_encounters_list = []
-    df_time_with_infected_list = []
+    # Initialize containers to save any scalar statistics
+    df_num_encounters_per_node_list = []
+    df_exposure_time_per_node_list = []
     stats_dict = {}
     cols_to_record = [key for key, val in results_dict.items()
                       if isinstance(val, (int, np.integer)) or isinstance(val, (float, np.float))]
+    cols_to_record += ['exposure_times']
     cols_not_recording = [key for key in results_dict.keys() if key not in cols_to_record]
-    logging.info(f'Recording stats for {cols_to_record}.')
+    logging.info(f'Recording the scalar stats for {cols_to_record}.')
     logging.info(f'We are not recording {cols_not_recording}.')
     for stat in cols_to_record:
         stats_dict[stat] = []
 
     # Record encounter stats as well
+    logging.info('Recording stats for df_num_encounters_per_node, df_exposure_time_per_node')
     for i in range(num_iterations):
         results_dict = results[i]
-        df_num_encounters_list.append(results_dict['df_num_encounters'])
-        df_time_with_infected_list.append(results_dict['df_time_with_infected'])
+        df_num_encounters_per_node_list.append(results_dict['df_num_encounters_per_node'])
+        df_exposure_time_per_node_list.append(results_dict['df_exposure_time_per_node'])
         for col in cols_to_record:
             stats_dict[col].append(results_dict[col])
-    df_cust = pd.DataFrame(stats_dict)
-    df_encounter_stats = pd.concat(df_num_encounters_list).reset_index(drop=True)
-    df_encounter_time_stats = pd.concat(df_time_with_infected_list).reset_index(drop=True)
-    return df_cust, df_encounter_stats, df_encounter_time_stats
+    df_stats = pd.DataFrame(stats_dict)
+    df_num_encounter_per_node_stats = pd.concat(df_num_encounters_per_node_list).reset_index(drop=True)
+    df_encounter_time_per_node_stats = pd.concat(df_exposure_time_per_node_list).reset_index(drop=True)
+    return df_stats, df_num_encounter_per_node_stats, df_encounter_time_per_node_stats

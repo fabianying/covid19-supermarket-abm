@@ -57,13 +57,13 @@ Key | Description
 `mean_num_cust_in_store` | Mean number of customers in the store during the simulation
 `max_num_cust_in_store` | Maximum number of customers in the store during the simulation
 `num_contacts` | Total number of contacts between infectious customers and susceptible customers
-`df_num_encounters` | Dataframe which contains the the number of encounters with infectious customers for each node
+`df_num_encounters_per_node` | Dataframe which contains the the number of encounters with infectious customers for each node
 `shopping_times` | Array that contains the length of all customer shopping trips
 `mean_shopping_time` | Mean of the shopping times
 `num_waiting_people` | Number of people who are queueing outside at every minute of the simulation (when the number of customers in the store is restricted)
 `mean_waiting_time` | Mean time that customers wait before being allowed to enter (when the number of customers in the store is restricted)
 `store_open_length` | Length of the store's opening hours
-`df_time_with_infected` | Dataframe containing the exposure time per node
+`df_exposure_time_per_node` | Dataframe containing the exposure time per node
 `total_time_crowded` | Total time that nodes were crowded (when there are more than `thres` number of customers in a node. Default value of `thres` is 3)
  
  # Questions?

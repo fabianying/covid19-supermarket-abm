@@ -8,7 +8,7 @@ logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 #
 stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setLevel(logging.WARNING)
+stdout_handler.setLevel(logging.INFO)
 stdout_handler.setFormatter(formatter)
 #
 # file_handler = logging.FileHandler('simulation_logs.log')
@@ -32,7 +32,7 @@ config = {'arrival_rate': 2.55,
            'infection_proportion': 0.0011,
            'max_customers_in_store': None,
           'logging_enabled': True,
-          'raise_test_error': True}
+          'raise_test_error': False}
 
 # load data
 zone_paths = load_example_paths()
@@ -47,9 +47,12 @@ for key, val in results_dict.items():
 
 print(list(results_dict.keys()))
 
-df_cust, df_encounter_stats, df_encounter_time_stats = simulate_several_days(config, G, path_generator_function,
+df_stats, df_num_encounter_per_node_stats, df_encounter_time_per_node_stats = simulate_several_days(config, G, path_generator_function,
                                                                              path_generator_args, num_iterations=4,
                                                                              use_parallel=False)
-print(df_cust)
-print(df_encounter_stats)
-print(df_encounter_time_stats)
+print(df_stats)
+print(df_num_encounter_per_node_stats)
+print(df_encounter_time_per_node_stats)
+
+df_stats.to_parquet('test.parquet')
+

@@ -37,7 +37,7 @@ class Store(object):
         self.customers_next_zone = {}  # maps customer to the next zone that it wants to go
         self.is_open = True
         self.is_closed_event = self.env.event()
-        self.time_with_infected = {}
+        self.time_with_infected_per_customer = {}
         self.time_with_infected_per_node = {node: 0 for node in self.G}
         self.node_arrival_time_stamp = {}
         self.num_customers_waiting_outside = 0
@@ -124,7 +124,7 @@ class Store(object):
         if not infected:
             # Increase counter
             self.number_encounters_with_infected[customer_id] = 0
-            self.time_with_infected[customer_id] = 0
+            self.time_with_infected_per_customer[customer_id] = 0
         else:
             self.infected_customers.append(customer_id)
         self._customer_arrival(customer_id, start_node, infected)
@@ -180,14 +180,14 @@ class Store(object):
             for s_cust in s_customers:
                 dt_with_infected = self.env.now - max(self.node_arrival_time_stamp[s_cust],
                                                       self.node_arrival_time_stamp[customer_id])
-                self.time_with_infected[s_cust] += dt_with_infected
+                self.time_with_infected_per_customer[s_cust] += dt_with_infected
                 self.time_with_infected_per_node[node] += dt_with_infected
         else:
             i_customers = self.infected_customers_at_nodes[node]
             for i_cust in i_customers:
                 dt_with_infected = self.env.now - max(self.node_arrival_time_stamp[i_cust],
                                                       self.node_arrival_time_stamp[customer_id])
-                self.time_with_infected[customer_id] += dt_with_infected
+                self.time_with_infected_per_customer[customer_id] += dt_with_infected
                 self.time_with_infected_per_node[node] += dt_with_infected
 
         num_cust_at_node = len(self.customers_at_nodes[node])
