@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 import networkx as nx
 
 from covid19_supermarket_abm.path_generators import zone_path_to_full_path_multiple_paths
@@ -63,8 +62,11 @@ def sythetic_paths_generator(mu, sigma, entrance_nodes, till_nodes, exit_nodes, 
 
 
 def get_all_shortest_path_dicts(G):
+    """
+    Get a dictionary whose values are a list of all shortest path between source and target
+    """
     shortest_path_dict = {}
-    for source in tqdm(G):
+    for source in G:
         shortest_path_dict[source] = {}
         for target in G:
             shortest_path_dict[source][target] = list(nx.all_shortest_paths(G, source, target))

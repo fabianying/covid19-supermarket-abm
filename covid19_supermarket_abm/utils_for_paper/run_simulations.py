@@ -127,8 +127,7 @@ def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir=
                                                                                                       extra_outputs,
                                                                                                       # path_generator_function,
                                                                                                       # path_generator_args,
-                                                                                                      num_iterations=num_iterations,
-                                                                                                      data_dir=data_dir)
+                                                                                                      num_iterations=num_iterations)
 
     results_folder = os.path.join(results_dir, 'results')
     if not os.path.isdir(results_folder):

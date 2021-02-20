@@ -54,7 +54,7 @@ Key | Description
 `num_cust `| Total number of customers
 `num_S` | Number of susceptible customers
 `num_I` | Number of infected customers
-`total_time_with_infected` | Total exposure time
+`total_exposure_time` | Total exposure time
 `num_contacts_per_cust` | Number of contacts with infectious customers per susceptible customer
 `num_cust_w_contact` | Number of susceptible customers which have at least one contact with an infectious customer
 `mean_num_cust_in_store` | Mean number of customers in the store during the simulation
@@ -111,7 +111,7 @@ Key | Description
 `max_customers_in_store`| Maximum number of customers allowed in store (Default: `None`, i.e., disabled)
  `with_node_capacity` | Set to `True` to limit the number of customers in each node. (Default: `False`). WARNING: This may cause simulations not to terminate due to gridlocks. 
  `node_capacity` | The number of customers allowed in each node, if  `with_node_capacity` is set to `True`. (Default: `2`)
- `logging_enabled` | Set to `True` to start logging simulations. (Default: `False`). The logs can be accessed in the `store` object, e.g., via `results_dict['store_object'].logs`. Also if some sanity checks fail, then logs will be saved to file. 
+ `logging_enabled` | Set to `True` to start logging simulations. (Default: `False`). The logs can be accessed in `results_dict['logs']`. Also if sanity checks fail, logs will be saved to file. 
  
  
  ## Store network
@@ -215,17 +215,22 @@ path_generator_function, path_generator_args = get_path_generator(path_generatio
  
  ```python
 from covid19_supermarket_abm.path_generators import get_path_generator
+from covid19_supermarket_abm.utils.create_synthetic_baskets import get_all_shortest_path_dicts
+import networkx as nx
 entrance_nodes = [0]
 till_nodes = [2]
 exit_nodes = [3]
 item_nodes = [1]
 mu = 0.07
 sigma = 0.76
-synthetic_path_generator_args = [mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]
+shortest_path_dict = get_all_shortest_path_dicts(G)
+synthetic_path_generator_args = [mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes, shortest_path_dict]
 path_generator_function, path_generator_args = get_path_generator(path_generation='synthetic',
                                                             synthetic_path_generator_args=synthetic_path_generator_args)
 ```
 
+ Note that this path generator may be quite slow. In the paper, we first pre-generated paths 100,000 paths 
+ and then used the Empirical path generator with the pre-generated paths.  
  
  # Questions?
  

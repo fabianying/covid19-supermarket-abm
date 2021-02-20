@@ -181,18 +181,18 @@ def get_path_generator(path_generation: str = 'empirical', G: Optional[nx.Graph]
         assert synthetic_path_generator_args is not None, \
             "If you use path_generation='synthetic', " \
             "you need to input synthetic_path_generator_args=" \
-            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]"
+            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes, shortest_path_dict]"
         assert type(synthetic_path_generator_args) is list, \
             "If you use path_generation='synthetic', " \
             "you need to input synthetic_path_generator_args=" \
-            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]"
-        assert len(synthetic_path_generator_args) == 6, \
+            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes, shortest_path_dict]"
+        assert len(synthetic_path_generator_args) == 7, \
             "If you use path_generation='synthetic', " \
             "you need to input synthetic_path_generator_args=" \
-            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]"
+            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes, shortest_path_dict]"
         path_generator_function = sythetic_paths_generator
         path_generator_args = synthetic_path_generator_args  # [mu, sigma, entrance_nodes,
-        # till_nodes, exit_nodes, item_nodes]
+        # till_nodes, exit_nodes, item_nodes, shortest_path_dict]
     elif path_generation == 'tmatrix':
         assert zone_paths is not None, "If you use path_generation='tmatrix', you need to input zone_paths"
         assert G is not None, "If you use path_generation='tmatrix', you need to input the store network G"

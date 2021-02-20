@@ -1,8 +1,4 @@
-import datetime
-import io
 import multiprocessing
-import os
-import uuid
 from itertools import repeat
 
 import networkx as nx
@@ -87,7 +83,7 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     if floorarea is not None:
         results['mean_num_cust_in_store_per_sqm'] = results['mean_num_cust_in_store'] / floorarea
         results['max_num_cust_in_store_per_sqm'] = results['max_num_cust_in_store'] / floorarea
-    results['store_object'] = store
+    results['logs'] = store.logs
     return results
 
 
@@ -97,7 +93,6 @@ def simulate_several_days(config: dict,
                           path_generator_function,
                           path_generator_args: list,
                           num_iterations: int = 1000,
-                          data_dir = '.',
                           use_parallel: bool = False):
     """Run several simulations and return selected number of stats from these simulations"""
 
