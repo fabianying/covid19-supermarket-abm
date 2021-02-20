@@ -103,6 +103,22 @@ def create_random_item_paths(num_items, entrance_nodes, till_nodes, exit_nodes, 
 
 def sythetic_paths_generator(mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes,
                                                 shortest_path_dict, batch_size=1000):
+    """The synthetic path generator generates a random customer path as follows:
+    First, it samples the size K of the shopping basket using a log-normal random variable with parameter mu and sigma.
+    Second, it chooses a random entrance node as the first node v_1 in the path.
+    Third, it samples K random item nodes, chosen uniformly at random with replacement from item_nodes, which we denote by
+    v_2, ... v_K+1.
+    Fourth, it samples a random till node and exit node, which we denote by v_K+2 and v_K+3.
+    The sequence v_1, ..., v_K+3 is a node sequence where the customer bought items, along the the entrance, till and exit
+    nodes that they visited.
+    Finally, we convert this sequence to a full path on the network using the shortest paths between consecutive nodes
+    in the sequence.
+    We use shortest_path_dict for this.
+    For more information, see the Data section in https://arxiv.org/pdf/2010.07868.pdf
+
+    The batch_size specifies how many paths we generate in each batch (for efficiency reasons).
+    """
+
     while True:
         num_items = sample_num_products_in_basket_batch(mu, sigma, batch_size)
         item_paths = create_random_item_paths(num_items, entrance_nodes, till_nodes, exit_nodes, item_nodes)
@@ -140,31 +156,51 @@ def replace_till_zone(path, till_zone, all_till_zones):
     return path
 
 
-def get_path_generator(G: nx.Graph, path_generation: str = 'empirical', zone_paths: List[List[int]]=None,
+def get_path_generator(path_generation: str = 'empirical', G: Optional[nx.Graph]=None,
+                       full_paths: Optional[List[List[int]]]=None,
+                       zone_paths: Optional[List[List[int]]]=None,
                        synthetic_path_generator_args: Optional[list] = None):
-    """Create path generator functions and args from the list of zone paths.
-    Each zone path is a sequence of zones that a customer purchased items from, so consecutive zones in the sequence
+    """Create path generator functions.
+    Note that a zone path is a sequence of zones that a customer purchased items from, so consecutive zones in the sequence
     may not be adjacent in the store graph. We map the zone path to the full shopping path by assuming that
     customers walk shortest paths between purchases."""
 
     # Decide how paths are generated
-
-    if path_generation == 'synthetic':
+    if path_generation == 'empirical':
+        path_generator_function = paths_generator_from_actual_paths
+        if full_paths is not None:
+            path_generator_args = [full_paths]
+        else:
+            assert zone_paths is not None, "If you use path_generation='empirical', you need to specify either zone_paths or full_paths"
+            assert G is not None, "If you use path_generation='empirical' with zone_paths, you need to input the store network G"
+            shortest_path_dict = dict(nx.all_pairs_dijkstra_path(G))
+            shopping_paths = [zone_path_to_full_path(path, shortest_path_dict) for path in zone_paths]
+            full_paths = [zone_path_to_full_path(path, shortest_path_dict) for path in shopping_paths]
+            path_generator_args = [full_paths]
+    elif path_generation == 'synthetic':
+        assert synthetic_path_generator_args is not None, \
+            "If you use path_generation='synthetic', " \
+            "you need to input synthetic_path_generator_args=" \
+            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]"
+        assert type(synthetic_path_generator_args) is list, \
+            "If you use path_generation='synthetic', " \
+            "you need to input synthetic_path_generator_args=" \
+            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]"
+        assert len(synthetic_path_generator_args) == 6, \
+            "If you use path_generation='synthetic', " \
+            "you need to input synthetic_path_generator_args=" \
+            "[mu, sigma, entrance_nodes, till_nodes, exit_nodes, item_nodes]"
         path_generator_function = sythetic_paths_generator
         path_generator_args = synthetic_path_generator_args  # [mu, sigma, entrance_nodes,
         # till_nodes, exit_nodes, item_nodes]
     elif path_generation == 'tmatrix':
+        assert zone_paths is not None, "If you use path_generation='tmatrix', you need to input zone_paths"
+        assert G is not None, "If you use path_generation='tmatrix', you need to input the store network G"
         shortest_path_dict = dict(nx.all_pairs_dijkstra_path(G))
         shopping_paths = [zone_path_to_full_path(path, shortest_path_dict) for path in zone_paths]
         tmatrix = get_transition_matrix(shopping_paths, len(G))
         path_generator_function = path_generator_from_transition_matrix
         path_generator_args = [tmatrix, shortest_path_dict]
-    elif path_generation == 'empirical':
-        shortest_path_dict = dict(nx.all_pairs_dijkstra_path(G))
-        shopping_paths = [zone_path_to_full_path(path, shortest_path_dict) for path in zone_paths]
-        path_generator_function = paths_generator_from_actual_paths
-        all_paths = [zone_path_to_full_path(path, shortest_path_dict) for path in shopping_paths]
-        path_generator_args = [all_paths]
     else:
         raise ValueError(f'Unknown path_generation scheme == {path_generation}')
     return path_generator_function, path_generator_args

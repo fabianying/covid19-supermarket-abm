@@ -114,8 +114,8 @@ def load_all_data(config_names, param, num_iterations):
 
 def add_additional_columns(df_mean, df_std, beta, use_time: bool = True, data_dir: str = '.'):
     if use_time:
-        df_mean['num_infected'] = df_mean.total_time_with_infected * beta
-        df_std['num_infected'] = df_std.total_time_with_infected * beta
+        df_mean['num_infected'] = df_mean['total_exposure_time'] * beta
+        df_std['num_infected'] = df_std[['total_exposure_time']] * beta
     else:
         df_mean['num_infected'] = df_mean.num_contacts * beta
         df_std['num_infected'] = df_std.num_contacts * beta

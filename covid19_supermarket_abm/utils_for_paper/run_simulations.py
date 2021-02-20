@@ -78,7 +78,7 @@ def run_several_simulations(config_name, num_iterations, multiplier_list, param=
     store_id = config_original['store_id']
     path_generation = config_original.get('path_generation', 'synthetic')
     G, extra_outputs = load_data_for_sim(store_id, config_original, data_dir)
-    path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
+    path_generator_function, path_generator_args = get_path_generator(path_generation, G=G, zone_paths=extra_outputs,
                                                                       synthetic_path_generator_args=extra_outputs)
 
     # Do simulations
@@ -116,16 +116,19 @@ def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir=
     config = config_original
     logging.info(f'Loaded config file: {config_filename}')
     store_id = config_original['store_id']
-    path_generation = config_original.get('path_generation', 'synthetic')
+    # path_generation = config_original.get('path_generation', 'synthetic')
     G, extra_outputs = load_data_for_sim(store_id, config_original, data_dir)
-    path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
-                                                                      synthetic_path_generator_args=extra_outputs)
+    # path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
+    #                                                                   synthetic_path_generator_args=extra_outputs)
 
     # Do simulations
-    df_cust, df_num_encounter_per_node_stats, df_exposure_time_per_node_stats = simulate_several_days(config, G,
-                                                                                                      path_generator_function,
-                                                                                                      path_generator_args,
-                                                                                                      num_iterations=num_iterations)
+    df_cust, df_num_encounter_per_node_stats, df_exposure_time_per_node_stats = simulate_several_days(config,
+                                                                                                      G,
+                                                                                                      extra_outputs,
+                                                                                                      # path_generator_function,
+                                                                                                      # path_generator_args,
+                                                                                                      num_iterations=num_iterations,
+                                                                                                      data_dir=data_dir)
 
     results_folder = os.path.join(results_dir, 'results')
     if not os.path.isdir(results_folder):

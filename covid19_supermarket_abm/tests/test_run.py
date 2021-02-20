@@ -39,7 +39,7 @@ zone_paths = load_example_paths()
 G = load_example_store_graph()
 
 # Decide how paths are generated; by default we take the empirical paths
-path_generator_function, path_generator_args = get_path_generator(G, zone_paths=zone_paths)
+path_generator_function, path_generator_args = get_path_generator(zone_paths=zone_paths, G=G)
 results_dict = simulate_one_day(config, G, path_generator_function, path_generator_args)
 for key, val in results_dict.items():
     print(key)
@@ -48,8 +48,8 @@ for key, val in results_dict.items():
 print(list(results_dict.keys()))
 
 df_stats, df_num_encounter_per_node_stats, df_encounter_time_per_node_stats = simulate_several_days(config, G, path_generator_function,
-                                                                             path_generator_args, num_iterations=4,
-                                                                             use_parallel=False)
+                                                                             path_generator_args, num_iterations=50,
+                                                                             use_parallel=True)
 print(df_stats)
 print(df_num_encounter_per_node_stats)
 print(df_encounter_time_per_node_stats)

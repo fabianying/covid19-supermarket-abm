@@ -17,31 +17,11 @@ from covid19_supermarket_abm.core import Store, _customer_arrivals, _stats_recor
 from covid19_supermarket_abm.utils import istarmap  # enable progress bar with multiprocessing
 
 
-# def set_up_logger(log_name):
-#     logger = logging.getLogger(log_name)
-#     logger.setLevel(logging.DEBUG)
-#     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#
-#     file_handler = logging.FileHandler(log_name)
-#     file_handler.setLevel(logging.DEBUG)
-#     file_handler.setFormatter(formatter)
-#     logger.addHandler(file_handler)
-#     # log_capture_string = io.StringIO()
-#     # ch = logging.StreamHandler(log_capture_string)
-#     # ch.setLevel(logging.DEBUG)
-#     # ch.setFormatter(formatter)
-#     # logger.addHandler(ch)
-#     logger.propagate = False
-#     return logger
-# return logger, log_capture_string
-
-
-
 def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list):
     # Get parameters
+    num_hours_open = config['num_hours_open']
     logging_enabled = config.get('logging_enabled', False)
     raise_test_error = config.get('raise_test_error', False)  # for debugging purposes
-    num_hours_open = config.get('num_hours_open', 12)
     with_node_capacity = config.get('with_node_capacity', False)
     max_customers_in_store_per_sqm = config.get('max_customers_in_store_per_sqm', None)
     floorarea = config.get('floorarea', None)
@@ -87,7 +67,7 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     results = {'num_cust': num_cust,
                'num_S': num_S,
                'num_I': num_cust - num_S,
-               'total_time_with_infected': sum(store.time_with_infected_per_customer.values()),
+               'total_exposure_time': sum(store.time_with_infected_per_customer.values()),
                'num_contacts_per_cust': num_contacts_per_cust,
                'num_cust_w_contact': len(num_contacts_per_cust),
                'mean_num_cust_in_store': np.mean(list(store.stats['num_customers_in_store'].values())),
@@ -107,14 +87,25 @@ def simulate_one_day(config: dict, G: nx.Graph, path_generator_function, path_ge
     if floorarea is not None:
         results['mean_num_cust_in_store_per_sqm'] = results['mean_num_cust_in_store'] / floorarea
         results['max_num_cust_in_store_per_sqm'] = results['max_num_cust_in_store'] / floorarea
+    results['store_object'] = store
     return results
 
 
-def simulate_several_days(config: dict, G: nx.Graph, path_generator_function, path_generator_args: list,
-                          num_iterations: int = 1000, use_parallel: bool = False):
+def simulate_several_days(config: dict,
+                          G: nx.Graph,
+                          # extra_outputs,
+                          path_generator_function,
+                          path_generator_args: list,
+                          num_iterations: int = 1000,
+                          data_dir = '.',
+                          use_parallel: bool = False):
     """Run several simulations and return selected number of stats from these simulations"""
 
     # Run simulations
+
+    # path_generation = config.get('path_generation', 'synthetic')
+    # path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
+    #                                                                   synthetic_path_generator_args=extra_outputs)
     if use_parallel:
         args = [config, G, path_generator_function, path_generator_args]
         repeated_args = zip(*[repeat(item, num_iterations) for item in args])

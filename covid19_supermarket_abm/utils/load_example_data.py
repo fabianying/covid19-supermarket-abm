@@ -10,11 +10,14 @@ import pandas as pd
 from matplotlib.patches import Polygon
 
 from covid19_supermarket_abm.utils.shelf_class import Shelf
+from covid19_supermarket_abm.utils.create_store_network import dist
 
 data_dir = Path(__file__).parent.parent / 'example_data'
 
 
 def load_example_store_graph(directed: bool = False) -> nx.Graph:
+    """We load our example store graph.
+    Note that this uses a different way for important a graph"""
     # Load parameters
     if directed:
         create_using = nx.DiGraph()
@@ -53,12 +56,6 @@ def load_example_paths():
     with open(os.path.join(data_dir, f'zone_paths.json'), 'r') as f:
         zone_paths = json.load(f)
     return zone_paths
-
-
-def dist(u, v, pos: dict) -> float:
-    (x1, y1) = pos[u]
-    (x2, y2) = pos[v]
-    return np.linalg.norm([x1 - x2, y1 - y2])
 
 
 def load_shelves(store_id: int, units='cm', suffix='', data_dir='.') -> List[Shelf]:

@@ -206,11 +206,10 @@ class Store(object):
         return f'{self.env.now:.4f}'
 
     def log(self, string: str):
-        pass
-        # if self.logging_enabled:
-        #     self.logs.append(f'[Time: {self.now()}] ' + string)
-        # if self.logger is not None:
-        #     self.logger.debug(f'[Time: {self.now()}] ' + string)
+        if self.logging_enabled:
+            self.logs.append(f'[Time: {self.now()}] ' + string)
+        if self.logger is not None:
+            self.logger.debug(f'[Time: {self.now()}] ' + string)
 
 
 def customer(env: simpy.Environment, customer_id: int, infected: bool, store: Store, path: List[int],
@@ -319,17 +318,9 @@ def _sanity_checks(store: Store,
         if raise_test_error:
             raise RuntimeError("Test error")
     except Exception as e:
-        print(f'Sanity checks NOT passed. Something went wrong.')
-        # if logger is not None:
-        #     logger.error('Error occurred!', exc_info=True)
-        #     log_name = logger.name
-        #     print(f'Saving logs to {log_name}')
-        #     log_contents = log_capture_string.getvalue()
-        #     log_capture_string.close()
-        #     with open(log_name, 'w') as f:
-                # f.write(log_contents)
         time_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
         log_name = f'log_{time_string}_{uuid.uuid4().hex}.log'
+        print(f'Sanity checks NOT passed. Something went wrong. Saving logs in {log_name}.')
         with open(log_name, 'w') as f:
             f.write('\n'.join(store.logs))
         if not raise_test_error:
