@@ -39,7 +39,7 @@ We can examine the results that are stored in `results_dict`.
 ```python
 > print(list(results_dict.keys()))
 
-['num_cust', 'num_S', 'num_I', 'total_time_with_infected', 'num_contacts_per_cust', 'num_cust_w_contact', 'mean_num_cust_in_store', 'max_num_cust_in_store', 'num_contacts', 'shopping_times', 'mean_shopping_time', 'num_waiting_people', 'mean_waiting_time', 'store_open_length', 'df_num_encounters', 'df_time_with_infected', 'total_time_crowded']
+['num_cust', 'num_S', 'num_I', 'total_time_with_infected', 'num_contacts_per_cust', 'num_cust_w_contact', 'mean_num_cust_in_store', 'max_num_cust_in_store', 'num_contacts', 'shopping_times', 'mean_shopping_time', 'num_waiting_people', 'mean_waiting_time', 'store_open_length', 'df_num_encounters', 'df_time_with_infected', 'total_time_crowded', 'exposure_times']
 
 
 ```

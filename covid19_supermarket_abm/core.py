@@ -61,15 +61,6 @@ class Store(object):
         #     self.logging_enabled = True
         self.counter = simpy.Resource(self.env, capacity=self.max_customers_in_store)
 
-        # For profiling purposes
-        self.profiling = {'move_customer': 0,
-                          'infect_other_customers_at_node': 0,
-                          'get_infected_by_other_customers_at_node': 0,
-                          '_customer_wait': 0,
-                          '_customer_arrival': 0,
-                          '_customer_departure': 0
-                          }
-
         # Stats recording
         self.stats = {}
 
@@ -215,10 +206,11 @@ class Store(object):
         return f'{self.env.now:.4f}'
 
     def log(self, string: str):
-        if self.logging_enabled:
-            self.logs.append(f'[Time: {self.now()}] ' + string)
-        if self.logger is not None:
-            self.logger.debug(f'[Time: {self.now()}] ' + string)
+        pass
+        # if self.logging_enabled:
+        #     self.logs.append(f'[Time: {self.now()}] ' + string)
+        # if self.logger is not None:
+        #     self.logger.debug(f'[Time: {self.now()}] ' + string)
 
 
 def customer(env: simpy.Environment, customer_id: int, infected: bool, store: Store, path: List[int],
