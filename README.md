@@ -162,7 +162,7 @@ from covid19_supermarket_abm.path_generators import get_path_generator
 path_generator_function, path_generator_args = get_path_generator(path_generation, **args) 
 ```
 
-\*There is a [third generator](https://github.com/fabianying/covid19-supermarket-abm/blob/main/covid19_supermarket_abm/path_generators.py) implemented, but for most purposes, the first two are likely preferable.
+\*There is a [third generator](https://github.com/fabianying/covid19-supermarket-abm/blob/12504eabfad03e2ffe0a6c9aac230d19e24c492a/covid19_supermarket_abm/path_generators.py#L196) implemented, but for most purposes, the first two are likely preferable.
 
 ### Empirical path generator 
 The empirical path generator takes as input a list of full paths 
