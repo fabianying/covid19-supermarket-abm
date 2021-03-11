@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="covid19-supermarket-abm",
-    version="0.0.3",
+    version="0.0.4",
     author="Fabian Ying",
     author_email="fabian.m.ying@gmail.com",
     description='Agent-based model for Covid-19 transmission in supermarkets',
