@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="covid19-supermarket-abm",
-    version="0.0.4",
+    version="0.0.5",
     author="Fabian Ying",
     author_email="fabian.m.ying@gmail.com",
     description='Agent-based model for Covid-19 transmission in supermarkets',
@@ -27,14 +27,14 @@ setuptools.setup(
         ]
     ),
 
-    # install_requires=[
-    #     'pandas',
-    #     'numpy',
-    #     'simpy',
-    #     'matplotlib',
-    #     'networkx',
-    #     'tqdm',
-    #     'pyarrow'
-    # ],
+    install_requires=[
+        'pandas>=0.24.2',
+        'numpy>=1.16.2',
+        'simpy>=4.0.1',
+        'matplotlib>=3.1.0',
+        'networkx>=2.5',
+        'tqdm',
+        'pyarrow>=0.16.0'
+    ],
 
 )
