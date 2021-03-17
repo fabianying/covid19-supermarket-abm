@@ -20,7 +20,7 @@ from covid19_supermarket_abm.path_generators import get_path_generator
 from covid19_supermarket_abm.simulator import simulate_one_day
 
 # Set parameters
-config = {'arrival_rate': 2.55,  # Poisson rate at which customers arrival
+config = {'arrival_rate': 2.55,  # Poisson rate at which customers arrive
            'traversal_time': 0.2,  # mean wait time per node
            'num_hours_open': 14,  # store opening hours
            'infection_proportion': 0.0011,  # proportion of customers that are infectious
