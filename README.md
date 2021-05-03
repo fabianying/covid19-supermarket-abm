@@ -1,5 +1,5 @@
 # Agent-based model for COVID-19 transmission in supermarkets. 
-This code accompanies the paper ["Modelling COVID-19 transmission in supermarkets using an agent-based model"](https://arxiv.org/abs/2010.07868).
+This code accompanies our PLoS ONE paper ["Modelling COVID-19 transmission in supermarkets using an agent-based model"](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0249821) (2021).
 
 # Installation
 
